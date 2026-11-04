@@ -104,6 +104,20 @@ input.up{text-transform:uppercase}
 .sub{font-size:11px;font-weight:800;letter-spacing:.14em;text-transform:uppercase;color:var(--mut);margin:6px 0 -2px;grid-column:1/-1;display:flex;align-items:center;gap:10px}
 .sub::after{content:"";flex:1;height:1px;background:var(--line)}
 
+[hidden]{display:none!important}
+/* caricamento foto */
+.drop{appearance:none;width:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;padding:22px 16px;
+  border:1.5px dashed var(--line-2);border-radius:14px;background:var(--card-2);cursor:pointer;color:var(--mut);text-align:center;transition:border-color .15s,background .15s}
+.drop:hover,.dz.over .drop{border-color:var(--lime);background:#1d1d1d}
+.drop svg{width:28px;height:28px;color:var(--lime);margin-bottom:4px}
+.drop b{color:var(--txt);font-size:14px;font-weight:700}
+.drop span{font-size:12px}
+.dropped{display:flex;align-items:center;gap:14px;padding:10px;border:1px solid var(--line-2);border-radius:14px;background:var(--card-2)}
+.dz.over .dropped{border-color:var(--lime)}
+.dropped img{width:132px;height:88px;object-fit:cover;border-radius:9px;flex:none;background:#000}
+.dacts{display:flex;gap:8px;flex-wrap:wrap}
+.dacts .btn{height:34px;padding:0 14px;font-size:12px}
+
 .cta{display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap;
   background:linear-gradient(135deg,#171717,#0f0f0f);border:1px solid var(--line);border-radius:18px;padding:20px 22px}
 .cta p{font-size:13px;color:var(--mut);max-width:290px}
@@ -171,11 +185,17 @@ input.up{text-transform:uppercase}
 .lst li::before{content:"";position:absolute;left:3px;top:.28em;width:4px;height:8px;border:solid var(--lime);border-width:0 1.8px 1.8px 0;transform:rotate(40deg)}
 .lst ul.ex li{color:rgba(255,255,255,.78)}
 .lst ul.ex li::before{left:2px;top:.62em;width:8px;height:0;border:0;border-top:1.6px solid rgba(255,255,255,.42);transform:none}
-.tot{display:flex;align-items:center;justify-content:space-between;gap:20px;background:var(--lime);color:#0a0a0a;padding:12px 22px}
-.tot .tl{min-width:0;flex:1}
-.tot .k{display:block;font-size:8.6px;font-weight:800;letter-spacing:.12em;text-transform:uppercase;opacity:.75}
-.tot .notes{display:block;font-size:10.4px;font-weight:600;margin-top:3px;white-space:pre-line;overflow-wrap:anywhere}
-.tot .tv{font-size:24px;font-weight:800;letter-spacing:-.02em;white-space:nowrap}
+.enote{padding:12px 22px 14px;border-top:1px solid rgba(255,255,255,.14)}
+.enote .k{display:block;font-size:8.6px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:rgba(255,255,255,.6);margin-bottom:4px}
+.enote .v{display:block;font-size:10.8px;font-weight:500;line-height:1.4;white-space:pre-line;overflow-wrap:anywhere}
+
+/* dati veicolo + foto: con la foto i campi stanno su 3 colonne, senza foto occupano tutta la larghezza */
+.veh{display:flex;gap:22px;align-items:stretch}
+.vf{flex:1;min-width:0;display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:11px 22px;align-content:start}
+.vf .fld{grid-column:span var(--n,2)}
+.photo{flex:0 0 238px;min-height:150px;position:relative;border-radius:10px;overflow:hidden;background:#ecece7;box-shadow:inset 0 0 0 1px #e1e1db}
+.photo img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block}
+.sheet.final .veh.nophoto .vf .fld,.sheet.measure .veh.nophoto .vf .fld{grid-column:span var(--w,2)}
 
 .note-box{font-size:11.2px;line-height:1.55;white-space:pre-wrap;overflow-wrap:anywhere;font-weight:500;padding:11px 14px;border-radius:10px;background:#f4f4f0;border-left:4px solid var(--lime);box-shadow:inset 0 0 0 1px #e8e8e2}
 .s-foot-area{margin-top:auto;padding-top:10px;break-inside:avoid}
@@ -187,8 +207,10 @@ input.up{text-transform:uppercase}
 .s-foot span{color:var(--lime);margin:0 .5em}
 
 /* voci vuote: sfumate a schermo, nascoste nel PDF (e nella "Vista PDF") */
-.sheet .fld.is-empty,.sheet .kpi.is-empty,.sheet .lst.is-empty,.sheet .tot.is-empty,.sheet .note-box.is-empty{opacity:.4}
-.sheet .fld.is-empty .v::after,.sheet .kpi.is-empty .v::after{content:"—";font-weight:400}
+.sheet .fld.is-empty,.sheet .kpi.is-empty,.sheet .lst.is-empty,.sheet .enote.is-empty,.sheet .note-box.is-empty,.sheet .photo.is-empty{opacity:.4}
+.sheet .fld.is-empty .v::after,.sheet .kpi.is-empty .v::after,.sheet .enote.is-empty .v::after{content:"—";font-weight:400}
+.sheet .photo.is-empty img{display:none}
+.sheet .photo.is-empty::after{content:"Foto dell'auto";position:absolute;inset:0;display:grid;place-items:center;font-size:9.6px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:#7a7a74}
 .sheet .lst.is-empty ul::after{content:"—";color:rgba(255,255,255,.5)}
 .sheet .note-box.is-empty .v::after{content:"—"}
 .sheet.final .is-empty,.sheet.measure .is-empty{display:none!important}
@@ -238,6 +260,7 @@ dialog .acts{display:flex;gap:10px;justify-content:flex-end;margin-top:22px;flex
   .frame{height:auto!important;overflow:visible;box-shadow:none;border-radius:0}
   .sheet{transform:none!important;width:210mm;min-height:297mm}
   .sheet .is-empty{display:none!important}
+  .sheet .veh.nophoto .vf .fld{grid-column:span var(--w,2)}
   .sheet .kpi ~ .kpi::before{display:none}
   .sheet .kpi:not(.is-empty) ~ .kpi:not(.is-empty)::before{display:block}
 }
@@ -302,6 +325,22 @@ dialog .acts{display:flex;gap:10px;justify-content:flex-end;margin-top:22px;flex
         <div class="f full"><label for="alim">Alimentazione</label><div class="chips" id="chipsAlim"></div><input id="alim" data-f="alim" type="text" autocomplete="off" placeholder="oppure scrivi un'altra alimentazione"></div>
         <div class="f full"><label for="cambio">Cambio</label><div class="chips" id="chipsCambio"></div><input id="cambio" data-f="cambio" type="text" autocomplete="off" placeholder="oppure scrivi un altro tipo di cambio"></div>
         <div class="f full"><label for="colore">Colore</label><input id="colore" data-f="colore" type="text" autocomplete="off" placeholder="es. Verde lime metallizzato"></div>
+        <div class="f full dz" id="dz">
+          <span class="lbl" id="fotoLbl">Foto dell'auto</span>
+          <input id="fotoIn" type="file" accept="image/*" hidden>
+          <button type="button" class="drop" id="dropBtn" aria-describedby="fotoHelp">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 8h3l1.6-2.4h6.8L17 8h3a1 1 0 0 1 1 1v9a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V9a1 1 0 0 1 1-1z"/><circle cx="12" cy="13" r="3.6"/></svg>
+            <b>Carica una foto</b><span>oppure trascinala qui</span>
+          </button>
+          <div class="dropped" id="dropped" hidden>
+            <img id="fotoThumb" alt="Anteprima della foto caricata">
+            <div class="dacts">
+              <button type="button" class="btn" id="fotoChange">Sostituisci</button>
+              <button type="button" class="btn" id="fotoDel">Rimuovi</button>
+            </div>
+          </div>
+          <div class="help" id="fotoHelp">JPG, PNG o WEBP. Viene ridimensionata da sola per tenere il file leggero.</div>
+        </div>
       </div>
     </section>
 
@@ -315,12 +354,6 @@ dialog .acts{display:flex;gap:10px;justify-content:flex-end;margin-top:22px;flex
         <div class="f full"><label for="kmInc">Chilometri inclusi</label><div class="chips" id="chipsKmInc"></div><input id="kmInc" data-f="kmInc" data-t="int" type="text" inputmode="numeric" autocomplete="off" placeholder="oppure scrivi i chilometri"><div class="chips sm" id="chipsKmUnit" aria-label="Unità"></div></div>
         <div class="f full"><label for="servInc">Servizi inclusi</label><div class="chips sm" id="chipsServInc"></div><textarea id="servInc" data-f="servInc" autocomplete="off" placeholder="Un servizio per riga"></textarea></div>
         <div class="f full"><label for="servEsc">Servizi / costi esclusi</label><div class="chips sm" id="chipsServEsc"></div><textarea id="servEsc" data-f="servEsc" autocomplete="off" placeholder="Un servizio o costo per riga"></textarea></div>
-        <div class="f full">
-          <label for="tot">Importo totale</label>
-          <div class="ad pre"><span>€</span><input id="tot" data-f="tot" data-t="money" type="text" inputmode="decimal" autocomplete="off" placeholder="0,00"></div>
-          <div class="help" id="totHelp">Si calcola da solo: anticipo + canone mensile × durata.</div>
-          <button type="button" class="linkbtn" id="totReset">Ripristina calcolo automatico</button>
-        </div>
         <div class="f full"><label for="noteEco">Note economiche</label><input id="noteEco" data-f="noteEco" type="text" autocomplete="off" placeholder="es. Spese di istruttoria incluse"></div>
       </div>
     </section>
@@ -392,18 +425,17 @@ dialog .acts{display:flex;gap:10px;justify-content:flex-end;margin-top:22px;flex
 
           <section class="sec" data-any>
             <h2 class="sh">Dati veicolo</h2>
-            <div class="rows">
-              <div class="row" data-any>
-                <div class="fld w2" data-k="marca"><span class="k">Marca e modello</span><span class="v"></span></div>
-                <div class="fld w2" data-k="versione"><span class="k">Allestimento / versione</span><span class="v"></span></div>
+            <div class="veh nophoto">
+              <div class="vf">
+                <div class="fld" style="--w:3;--n:3" data-k="marca"><span class="k">Marca e modello</span><span class="v"></span></div>
+                <div class="fld" style="--w:3;--n:3" data-k="versione"><span class="k">Allestimento / versione</span><span class="v"></span></div>
+                <div class="fld" style="--w:1;--n:2" data-k="immat"><span class="k">Immatricolazione</span><span class="v"></span></div>
+                <div class="fld" style="--w:1;--n:2" data-k="kmV"><span class="k">Chilometraggio</span><span class="v"></span></div>
+                <div class="fld" style="--w:1;--n:2" data-k="alim"><span class="k">Alimentazione</span><span class="v"></span></div>
+                <div class="fld" style="--w:1;--n:3" data-k="cambio"><span class="k">Cambio</span><span class="v"></span></div>
+                <div class="fld" style="--w:2;--n:3" data-k="colore"><span class="k">Colore</span><span class="v"></span></div>
               </div>
-              <div class="row" data-any>
-                <div class="fld" data-k="immat"><span class="k">Immatricolazione</span><span class="v"></span></div>
-                <div class="fld" data-k="kmV"><span class="k">Chilometraggio</span><span class="v"></span></div>
-                <div class="fld" data-k="alim"><span class="k">Alimentazione</span><span class="v"></span></div>
-                <div class="fld" data-k="cambio"><span class="k">Cambio</span><span class="v"></span></div>
-                <div class="fld w2" data-k="colore"><span class="k">Colore</span><span class="v"></span></div>
-              </div>
+              <figure class="photo" data-k="foto"><img alt="Foto del veicolo"></figure>
             </div>
           </section>
 
@@ -421,10 +453,7 @@ dialog .acts{display:flex;gap:10px;justify-content:flex-end;margin-top:22px;flex
                 <div class="lst" data-k="servInc"><span class="k">Servizi inclusi</span><ul></ul></div>
                 <div class="lst" data-k="servEsc"><span class="k">Servizi / costi esclusi</span><ul class="ex"></ul></div>
               </div>
-              <div class="tot" data-k="totale">
-                <div class="tl"><span class="k">Importo totale / note economiche</span><span class="notes" id="outNoteEco"></span></div>
-                <span class="tv v"></span>
-              </div>
+              <div class="enote" data-k="noteEco"><span class="k">Note economiche</span><span class="v"></span></div>
             </div>
           </section>
 
@@ -480,7 +509,7 @@ const LS = {
   set(k,v){ try { localStorage.setItem(k,v); } catch(e){} },
   del(k){ try { localStorage.removeItem(k); } catch(e){} },
 };
-const K_DRAFT = "aura-preventivatore:bozza", K_NUM = "aura-preventivatore:numero", K_CONS = "aura-preventivatore:consulente";
+const K_DRAFT = "aura-preventivatore:bozza", K_NUM = "aura-preventivatore:numero", K_CONS = "aura-preventivatore:consulente", K_FOTO = "aura-preventivatore:foto";
 const BASE_TITLE = document.title;
 
 const group = s => String(s).replace(/\B(?=(\d{3})+(?!\d))/g, ".");
@@ -524,14 +553,19 @@ function defaults(){
     cliente:"", indirizzo:"", cf:"", piva:"", tel:"", email:"",
     marca:"", versione:"", immat:"", km:"", alim:"", cambio:"", colore:"",
     prezzo:"", anticipo:"", canone:"", durata:"", kmInc:"", kmUnit:"km/anno",
-    servInc:"", servEsc:"", tot:"", totManual:false, noteEco:"", note:"",
+    servInc:"", servEsc:"", noteEco:"", note:"", foto:"",
   };
 }
 let S = defaults();
 let restored = false;
+let fotoSaved = "";
 try {
   const d = JSON.parse(LS.get(K_DRAFT) || "null");
-  if (d && typeof d === "object") { S = { ...S, ...d }; restored = true; }
+  if (d && typeof d === "object") {
+    S = { ...S, ...d }; restored = true;
+    const f = LS.get(K_FOTO) || "";
+    if (f.startsWith("data:image/")) S.foto = fotoSaved = f;
+  }
 } catch(e){}
 
 /* ═══ Logo (una sola copia nel file) ═══ */
@@ -596,7 +630,6 @@ fields.forEach(el => {
   const k = el.dataset.f;
   el.addEventListener("input", () => {
     S[k] = el.value;
-    if (k === "tot") S.totManual = true;
     update();
   });
   const t = el.dataset.t;
@@ -607,14 +640,33 @@ fields.forEach(el => {
   if (t === "int") el.addEventListener("blur", () => { el.value = fmtInt(el.value); S[k] = el.value; update(); });
   if (t === "digits") el.addEventListener("input", () => { const d = el.value.replace(/\D/g,""); if (d !== el.value){ el.value = d; S[k] = d; update(); } });
 });
-$("#totReset").addEventListener("click", () => { S.totManual = false; S.tot = ""; update(); });
 
-/* ═══ Calcoli ═══ */
-function autoTotal(){
-  const c = parseNum(S.canone), d = parseInt(S.durata, 10), a = parseNum(S.anticipo);
-  if (!isNaN(c) && d > 0) return (isNaN(a) ? 0 : a) + c * d;
-  return NaN;
+/* ═══ Foto dell'auto ═══ */
+const FOTO_MAX = 1400;   // lato lungo massimo in px: tiene leggero il file e il PDF
+const fotoIn = $("#fotoIn"), dz = $("#dz");
+function loadFoto(file){
+  if (!file) return;
+  if (!/^image\//.test(file.type)){ toast("Il file scelto non è un'immagine"); return; }
+  const url = URL.createObjectURL(file), img = new Image();
+  img.onload = () => {
+    URL.revokeObjectURL(url);
+    const r = Math.min(1, FOTO_MAX / Math.max(img.naturalWidth, img.naturalHeight));
+    const w = Math.max(1, Math.round(img.naturalWidth * r)), h = Math.max(1, Math.round(img.naturalHeight * r));
+    const c = document.createElement("canvas"); c.width = w; c.height = h;
+    const g = c.getContext("2d"); g.fillStyle = "#fff"; g.fillRect(0, 0, w, h); g.drawImage(img, 0, 0, w, h);
+    S.foto = c.toDataURL("image/jpeg", .86);
+    update(); toast("Foto caricata");
+  };
+  img.onerror = () => { URL.revokeObjectURL(url); toast("Non riesco a leggere questa immagine: prova con un JPG o un PNG"); };
+  img.src = url;
 }
+$("#dropBtn").addEventListener("click", () => fotoIn.click());
+$("#fotoChange").addEventListener("click", () => fotoIn.click());
+$("#fotoDel").addEventListener("click", () => { S.foto = ""; update(); });
+fotoIn.addEventListener("change", () => { loadFoto(fotoIn.files[0]); fotoIn.value = ""; });
+["dragenter","dragover"].forEach(t => dz.addEventListener(t, e => { e.preventDefault(); dz.classList.add("over"); }));
+dz.addEventListener("dragleave", e => { if (!dz.contains(e.relatedTarget)) dz.classList.remove("over"); });
+dz.addEventListener("drop", e => { e.preventDefault(); dz.classList.remove("over"); loadFoto(e.dataTransfer.files[0]); });
 
 /* ═══ Valori mostrati nel documento ═══ */
 function display(){
@@ -629,7 +681,7 @@ function display(){
     prezzo: money(S.prezzo), anticipo: money(S.anticipo), canone: money(S.canone),
     durataD: S.durata ? S.durata + " mesi" : "",
     kmIncD: kmI ? (isNumeric(kmI) ? fmtInt(kmI) + " " + S.kmUnit : kmI) : "",
-    totale: money(S.tot),
+    noteEco: S.noteEco.trim(),
     note: S.note.trim(),
   };
 }
@@ -643,10 +695,11 @@ function render(){
     const k = w.dataset.k;
     let empty;
     if (k === "servInc" || k === "servEsc"){ const a = lines(S[k]); li($("ul", w), a); empty = !a.length; }
-    else if (k === "totale"){ $(".tv", w).textContent = D.totale; $("#outNoteEco").textContent = S.noteEco.trim(); empty = !D.totale && !S.noteEco.trim(); }
+    else if (k === "foto"){ const im = $("img", w); if (S.foto){ if (im.src !== S.foto) im.src = S.foto; } else im.removeAttribute("src"); empty = !S.foto; }
     else { $(".v", w).textContent = D[k]; empty = !D[k]; }
     w.classList.toggle("is-empty", empty);
   });
+  $(".veh", sheet).classList.toggle("nophoto", !S.foto);
   // contenitori (dal più interno al più esterno)
   $$("[data-any]", sheet).reverse().forEach(c => {
     c.classList.toggle("is-empty", $$("[data-k]", c).every(x => x.classList.contains("is-empty")));
@@ -655,16 +708,10 @@ function render(){
 }
 
 function updateFormUI(){
-  // totale automatico
-  const t = autoTotal();
-  if (!S.totManual) S.tot = isNaN(t) ? "" : fmtMoney(t);
-  const totEl = $("#tot");
-  if (document.activeElement !== totEl || !S.totManual) totEl.value = S.tot;
-  $("#totReset").classList.toggle("on", S.totManual);
-  const a = parseNum(S.anticipo), c = parseNum(S.canone), d = parseInt(S.durata,10);
-  $("#totHelp").innerHTML = (!isNaN(c) && d > 0 && !S.totManual)
-    ? `Calcolato: <b>${isNaN(a) ? "" : "€ " + fmtMoney(a) + " + "}${d} × € ${fmtMoney(c)}</b>`
-    : (S.totManual ? "Importo inserito a mano." : "Si calcola da solo: anticipo + canone mensile × durata.");
+  // foto: miniatura nel form
+  $("#dropBtn").hidden = !!S.foto; $("#dropped").hidden = !S.foto;
+  const th = $("#fotoThumb");
+  if (S.foto){ if (th.src !== S.foto) th.src = S.foto; } else th.removeAttribute("src");
 
   // suggerimenti di validazione
   const pd = S.piva.replace(/\D/g,"");
@@ -674,7 +721,7 @@ function updateFormUI(){
   // contatori per card + barra di avanzamento
   let tot = 0, filled = 0;
   $$("[data-card]").forEach(card => {
-    const fs = $$("[data-f]", card).filter(e => e.id !== "tot");
+    const fs = $$("[data-f]", card);
     const n = fs.filter(e => String(S[e.dataset.f] || "").trim() !== "").length;
     tot += fs.length; filled += n;
     const cnt = $(".cnt", card); cnt.textContent = `${n}/${fs.length}`; cnt.classList.toggle("done", n === fs.length);
@@ -683,7 +730,12 @@ function updateFormUI(){
   refreshValiditaChips(); refreshChips();
 }
 
-const saveDraft = debounce(() => { LS.set(K_DRAFT, JSON.stringify(S)); LS.set(K_CONS, S.consulente || ""); }, 300);
+// la foto è pesante: sta in una chiave a parte e si riscrive solo quando cambia
+const saveDraft = debounce(() => {
+  const { foto, ...rest } = S;
+  LS.set(K_DRAFT, JSON.stringify(rest)); LS.set(K_CONS, S.consulente || "");
+  if (foto !== fotoSaved){ foto ? LS.set(K_FOTO, foto) : LS.del(K_FOTO); fotoSaved = foto; }
+}, 300);
 function update(){ updateFormUI(); render(); saveDraft(); }
 
 /* ═══ Anteprima: adattamento a una pagina A4 + scala ═══ */
