@@ -69,7 +69,7 @@ button,input,select,textarea{font:inherit;color:inherit}
 .f{display:flex;flex-direction:column;gap:6px;min-width:0}
 .f.full{grid-column:1/-1}
 .f>label,.f>.lbl{font-size:12px;font-weight:600;color:var(--mut)}
-input[type=text],input[type=email],input[type=tel],input[type=date],textarea{
+input[type=text],input[type=email],input[type=tel],input[type=date],input[type=password],textarea{
   width:100%;background:var(--card-2);border:1px solid var(--line-2);border-radius:11px;color:var(--txt);
   padding:0 14px;height:44px;font-size:14px;font-weight:500;transition:border-color .15s,background .15s,box-shadow .15s;
   color-scheme:dark;
@@ -215,6 +215,38 @@ input.up{text-transform:uppercase}
 .sheet .note-box.is-empty .v::after{content:"—"}
 .sheet.final .is-empty,.sheet.measure .is-empty{display:none!important}
 
+/* ───────── Storico + accesso ───────── */
+dialog.drawer{margin:0 0 0 auto;max-width:none;width:min(620px,100vw);height:100dvh;max-height:none;border-radius:22px 0 0 22px;padding:0;flex-direction:column;overflow:hidden}
+dialog.drawer[open]{display:flex}
+.hd{display:flex;align-items:center;gap:12px;padding:20px 22px 14px}
+.hd h4{font-size:13px;font-weight:800;letter-spacing:.14em;text-transform:uppercase;margin:0}
+.hd .hcount{font-size:12px;color:var(--mut)}
+.hd .x{appearance:none;margin-left:auto;border:1px solid var(--line-2);background:transparent;color:var(--txt);width:36px;height:36px;border-radius:50%;cursor:pointer;display:grid;place-items:center}
+.hd .x:hover{border-color:#6a6a6a;background:#161616}
+.hd .x svg{width:16px;height:16px}
+.hfil{display:flex;gap:10px;padding:0 22px 14px;flex-wrap:wrap}
+.hfil input{flex:1 1 200px;height:40px}
+.hfil select{height:40px;background:var(--card-2);border:1px solid var(--line-2);border-radius:11px;padding:0 12px;color:var(--txt);font-size:13px;font-weight:600;color-scheme:dark}
+.hlist{flex:1;overflow:auto;padding:0 22px 22px;display:flex;flex-direction:column;gap:10px}
+.hmsg{color:var(--mut);font-size:13.5px;padding:30px 8px;text-align:center;line-height:1.55}
+.hrow{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:14px 16px;display:flex;flex-direction:column;gap:6px}
+.h-top{display:flex;align-items:center;gap:10px}
+.h-num{font-size:14px;font-weight:800;letter-spacing:.02em}
+.h-date{font-size:12px;color:var(--mut)}
+.h-stato{appearance:none;margin-left:auto;height:28px;padding:0 26px 0 12px;border-radius:999px;border:1px solid var(--line-2);background:transparent;color:var(--mut);font-size:11.5px;font-weight:700;cursor:pointer;color-scheme:dark;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 10 6'%3E%3Cpath d='M1 1l4 4 4-4' fill='none' stroke='%239d9d98' stroke-width='1.6' stroke-linecap='round'/%3E%3C/svg%3E");
+  background-repeat:no-repeat;background-position:right 10px center;background-size:9px}
+.h-stato[data-s="Inviato"]{border-color:var(--lime);color:var(--lime)}
+.h-stato[data-s="Accettato"]{background-color:var(--lime);border-color:var(--lime);color:#0a0a0a}
+.h-stato[data-s="Rifiutato"]{border-color:#ff9b6b;color:#ff9b6b}
+.h-cli{font-size:15px;font-weight:700;overflow-wrap:anywhere}
+.h-veh,.h-meta{font-size:12.5px;color:var(--mut);overflow-wrap:anywhere}
+.h-acts{display:flex;gap:8px;margin-top:6px;flex-wrap:wrap}
+.h-acts .btn{height:34px;padding:0 14px;font-size:12px}
+.h-acts .btn.danger:hover{border-color:#ff7a59;color:#ff9b6b}
+#loginDlg input{margin-top:14px}
+.err{color:#ff9b6b;font-size:12.5px;font-weight:600;margin-top:8px}
+
 /* ───────── Dialog + toast ───────── */
 dialog{margin:auto;border:1px solid var(--line-2);background:#141414;color:var(--txt);border-radius:20px;padding:26px;max-width:440px;width:calc(100% - 32px);box-shadow:0 30px 80px rgba(0,0,0,.7)}
 dialog::backdrop{background:rgba(0,0,0,.66);backdrop-filter:blur(3px)}
@@ -273,6 +305,9 @@ dialog .acts{display:flex;gap:10px;justify-content:flex-end;margin-top:22px;flex
   <img class="logo" data-logo alt="Aura Automotive">
   <span class="ttl">Preventivatore</span>
   <span class="sp"></span>
+  <button class="btn ghost-lbl" id="btnHist" type="button" aria-label="Storico preventivi">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 12a9 9 0 1 0 3-6.7M3 4v5h5M12 7.5V12l3 2"/></svg><span>Storico</span>
+  </button>
   <button class="btn ghost-lbl" id="btnNew" type="button">
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg><span>Nuovo preventivo</span>
   </button>
@@ -483,6 +518,32 @@ dialog .acts{display:flex;gap:10px;justify-content:flex-end;margin-top:22px;flex
     <button class="btn primary" id="dlgYes" type="button"></button>
   </div>
 </dialog>
+
+<dialog id="loginDlg" aria-labelledby="loginT">
+  <form id="loginForm" autocomplete="on">
+    <h4 id="loginT">Accedi allo storico</h4>
+    <p id="loginP">Inserisci la password del team per salvare e ritrovare i preventivi.</p>
+    <label class="sr" for="loginPw" style="position:absolute;left:-9999px">Password</label>
+    <input id="loginPw" type="password" autocomplete="current-password" placeholder="Password" spellcheck="false">
+    <p class="err" id="loginErr" role="alert" hidden></p>
+    <div class="acts">
+      <button class="btn" id="loginNo" type="button">Continua senza storico</button>
+      <button class="btn primary" id="loginYes" type="submit">Accedi</button>
+    </div>
+  </form>
+</dialog>
+
+<dialog id="hist" class="drawer" aria-labelledby="histT">
+  <div class="hd">
+    <h4 id="histT">Storico preventivi</h4><span class="hcount" id="histCount"></span>
+    <button class="x" id="histX" type="button" aria-label="Chiudi"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg></button>
+  </div>
+  <div class="hfil">
+    <input id="histQ" type="text" placeholder="Cerca per numero, cliente, veicolo…" autocomplete="off" aria-label="Cerca nello storico">
+    <select id="histF" aria-label="Filtra per stato"><option value="">Tutti gli stati</option></select>
+  </div>
+  <div class="hlist" id="histList"></div>
+</dialog>
 <div class="toast" id="toast" role="status" aria-live="polite"></div>
 
 <script>
@@ -531,6 +592,9 @@ const dateIt = iso => /^\d{4}-\d{2}-\d{2}$/.test(iso || "") ? iso.split("-").rev
 const lines = s => String(s || "").split(/\n/).map(x => x.replace(/^\s*[-•*✓]\s*/, "").trim()).filter(Boolean);
 const norm = s => String(s).replace(/[.\s]/g, "").toLowerCase();
 const debounce = (fn, ms) => { let t; return (...a) => { clearTimeout(t); t = setTimeout(() => fn(...a), ms); }; };
+const newId = () => (globalThis.crypto && crypto.randomUUID) ? crypto.randomUUID() : Date.now().toString(36) + Math.random().toString(36).slice(2, 12);
+const esc = s => String(s).replace(/[&<>"']/g, c => ({ "&":"&amp;", "<":"&lt;", ">":"&gt;", '"':"&quot;", "'":"&#39;" }[c]));
+const el = (tag, cls, text) => { const e = document.createElement(tag); if (cls) e.className = cls; if (text != null) e.textContent = text; return e; };
 
 /* ═══ Stato ═══ */
 function nextNumber(){
@@ -554,6 +618,7 @@ function defaults(){
     marca:"", versione:"", immat:"", km:"", alim:"", cambio:"", colore:"",
     prezzo:"", anticipo:"", canone:"", durata:"", kmInc:"", kmUnit:"km/anno",
     servInc:"", servEsc:"", noteEco:"", note:"", foto:"",
+    id: newId(), numAuto: true, savedCliente: "",   // id nello storico · numero ancora automatico · cliente all'ultimo salvataggio
   };
 }
 let S = defaults();
@@ -630,6 +695,7 @@ fields.forEach(el => {
   const k = el.dataset.f;
   el.addEventListener("input", () => {
     S[k] = el.value;
+    if (k === "numero") S.numAuto = false;
     update();
   });
   const t = el.dataset.t;
@@ -642,7 +708,7 @@ fields.forEach(el => {
 });
 
 /* ═══ Foto dell'auto ═══ */
-const FOTO_MAX = 1400;   // lato lungo massimo in px: tiene leggero il file e il PDF
+const FOTO_MAX = 900;    // lato lungo massimo in px (~320 dpi nel PDF): tiene leggeri bozza, storico e PDF
 const fotoIn = $("#fotoIn"), dz = $("#dz");
 function loadFoto(file){
   if (!file) return;
@@ -764,23 +830,182 @@ $("#swFinal").addEventListener("change", e => { sheet.classList.toggle("final", 
 
 /* ═══ Dialog e toast ═══ */
 const dlg = $("#dlg");
+let askDone = null;
+const finishAsk = v => { const f = askDone; askDone = null; if (f) f(v); };
 function ask({ title, text = "", list = [], yes, no }){
   return new Promise(res => {
     $("#dlgT").textContent = title; $("#dlgP").textContent = text;
     $("#dlgL").replaceChildren(...list.map(t => { const l = document.createElement("li"); l.textContent = t; return l; }));
     $("#dlgL").style.display = list.length ? "" : "none";
     $("#dlgYes").textContent = yes; $("#dlgNo").textContent = no;
-    dlg.returnValue = "";
-    dlg.addEventListener("close", () => res(dlg.returnValue === "yes"), { once:true });
-    $("#dlgYes").onclick = () => dlg.close("yes");
-    $("#dlgNo").onclick = () => dlg.close("no");
+    askDone = res;
+    $("#dlgYes").onclick = () => { dlg.close(); finishAsk(true); };
+    $("#dlgNo").onclick = () => { dlg.close(); finishAsk(false); };
     dlg.showModal();
   });
 }
+// chiusa con Esc = "no"; un evento di chiusura vecchio non deve toccare una domanda già riaperta
+dlg.addEventListener("close", () => { if (!dlg.open) finishAsk(false); });
 let toastT;
 function toast(html){ const t = $("#toast"); t.innerHTML = html; t.classList.add("on"); clearTimeout(toastT); toastT = setTimeout(() => t.classList.remove("on"), 4200); }
 
+/* ═══ Storico condiviso (funzioni /api su Vercel) ═══ */
+const STATI = ["Generato", "Inviato", "Accettato", "Rifiutato"];
+// off = nessun server (file aperto dal computer) · login = serve la password · on = storico attivo
+const Remote = { mode: "off", storage: true, ready: Promise.resolve() };
+
+async function api(method, path, body){
+  const r = await fetch("/api/" + path, {
+    method, credentials: "same-origin",
+    headers: { "X-Aura": "1", ...(body ? { "Content-Type": "application/json" } : {}) },
+    body: body ? JSON.stringify(body) : undefined,
+  });
+  let j = null; try { j = await r.json(); } catch(e){}
+  if (!r.ok){
+    if (r.status === 401 && j && j.error === "non_autenticato") Remote.mode = "login";
+    throw Object.assign(new Error((j && j.error) || "errore"), { status: r.status });
+  }
+  return j;
+}
+async function checkSession(){
+  try { const j = await api("GET", "session"); Remote.mode = "on"; Remote.storage = j.storage !== false; }
+  catch(e){ if (Remote.mode !== "login") Remote.mode = "off"; }
+  return Remote.mode;
+}
+
+const loginDlg = $("#loginDlg");
+let loginDone = null;   // chi aspetta l'esito dell'accesso (true = collegato)
+const finishLogin = v => { const f = loginDone; loginDone = null; if (f) f(v); };
+function ensureLogin(){
+  if (Remote.mode === "on") return Promise.resolve(true);
+  if (Remote.mode !== "login") return Promise.resolve(false);
+  return new Promise(res => {
+    if (loginDone){ const prev = loginDone; loginDone = v => { prev(v); res(v); }; return; }   // finestra già aperta
+    loginDone = res;
+    $("#loginPw").value = ""; $("#loginErr").hidden = true;
+    loginDlg.showModal();
+    setTimeout(() => $("#loginPw").focus(), 50);
+  });
+}
+loginDlg.addEventListener("close", () => { if (!loginDlg.open) finishLogin(Remote.mode === "on"); });   // chiusa con Esc
+$("#loginNo").addEventListener("click", () => { loginDlg.close(); finishLogin(false); });
+$("#loginForm").addEventListener("submit", async e => {
+  e.preventDefault();
+  const pw = $("#loginPw").value, btn = $("#loginYes");
+  if (!pw) return;
+  btn.disabled = true;
+  try {
+    const j = await api("POST", "session", { password: pw });
+    Remote.mode = "on"; Remote.storage = j.storage !== false;
+    loginDlg.close();
+    finishLogin(true);
+    refreshNumber();
+  } catch(err){
+    const msg = { password_errata: "Password errata.", troppi_tentativi: "Troppi tentativi: riprova tra qualche minuto.",
+                  password_non_configurata: "La password non è ancora impostata su Vercel (variabile APP_PASSWORD)." }[err.message] || "Non riesco a collegarmi. Riprova.";
+    const box = $("#loginErr"); box.textContent = msg; box.hidden = false; $("#loginPw").select();
+  }
+  btn.disabled = false;
+});
+
+// il numero progressivo lo assegna il server, così due consulenti non possono avere lo stesso
+async function refreshNumber(){
+  if (Remote.mode !== "on" || !S.numAuto) return;
+  try {
+    const { numero } = await api("GET", "preventivi?next=1&anno=" + (S.data || todayISO()).slice(0, 4));
+    if (S.numAuto){ S.numero = numero; $("#numero").value = numero; update(); }
+  } catch(e){}
+}
+
+async function salvaRemoto(){
+  const data = { ...S }; delete data.foto;
+  const body = { id: S.id, data, foto: S.foto };
+  let r;
+  try { r = await api("POST", "preventivi", body); }
+  catch(e){ if (Remote.mode === "login" && await ensureLogin()) r = await api("POST", "preventivi", body); else throw e; }
+  S.numero = r.numero; S.numAuto = false; S.savedCliente = S.cliente.trim();
+  syncInputs(); update();
+}
+
+/* pannello Storico */
+const hist = $("#hist");
+let histItems = [];
+const MSG_NO_DB = "Il database dello storico non è ancora collegato su Vercel: segui la guida nel file README.";
+function histMsg(t){ $("#histList").replaceChildren(el("p", "hmsg", t)); $("#histCount").textContent = ""; }
+STATI.forEach(s => { const o = el("option", "", s); o.value = s; $("#histF").appendChild(o); });
+
+async function openHist(){
+  await Remote.ready;
+  if (Remote.mode === "login" && !(await ensureLogin())) return;
+  hist.showModal();
+  if (Remote.mode === "off") return histMsg("Lo storico funziona solo dal sito online: da questo file aperto sul computer i preventivi non vengono salvati.");
+  if (!Remote.storage) return histMsg(MSG_NO_DB);
+  histMsg("Caricamento…");
+  try { histItems = (await api("GET", "preventivi")).items || []; renderHist(); }
+  catch(e){
+    if (Remote.mode === "login"){ hist.close(); return openHist(); }
+    histMsg(e.message === "storage_non_configurato" ? MSG_NO_DB : "Non riesco a caricare lo storico. Controlla la connessione e riapri il pannello.");
+  }
+}
+function renderHist(){
+  if (Remote.mode !== "on" || !Remote.storage) return;
+  const q = $("#histQ").value.trim().toLowerCase(), f = $("#histF").value;
+  const rows = histItems.filter(x => (!f || x.stato === f) && (!q || [x.numero, x.cliente, x.marca, x.versione, x.consulente].join(" ").toLowerCase().includes(q)));
+  $("#histCount").textContent = histItems.length ? `${rows.length} di ${histItems.length}` : "";
+  $("#histList").replaceChildren(...(rows.length ? rows.map(histRow)
+    : [el("p", "hmsg", histItems.length ? "Nessun preventivo corrisponde alla ricerca." : "Ancora nessun preventivo: compare qui ogni volta che generi un PDF.")]));
+}
+function histRow(x){
+  const row = el("article", "hrow"), top = el("div", "h-top");
+  const sel = el("select", "h-stato");
+  STATI.forEach(s => { const o = el("option", "", s); o.value = s; sel.appendChild(o); });
+  sel.value = x.stato; sel.dataset.s = x.stato; sel.setAttribute("aria-label", "Stato del preventivo " + x.numero);
+  sel.addEventListener("change", () => setStato(x, sel));
+  top.append(el("b", "h-num", x.numero), el("span", "h-date", dateIt(x.data)), sel);
+  const veh = [x.marca, x.versione].filter(Boolean).join(" · ");
+  const meta = [x.canone ? money(x.canone) + " / mese" : "", x.consulente ? "Consulente: " + x.consulente : ""].filter(Boolean).join("  •  ");
+  const btn = (label, cls, fn) => { const b = el("button", "btn " + cls, label); b.type = "button"; b.addEventListener("click", fn); return b; };
+  const acts = el("div", "h-acts");
+  acts.append(btn("Apri", "", () => openQuote(x.id, false)), btn("Duplica", "", () => openQuote(x.id, true)), btn("Elimina", "danger", () => delQuote(x)));
+  row.append(top, el("div", "h-cli", x.cliente || "Cliente non indicato"), el("div", "h-veh", veh || "Veicolo non indicato"));
+  if (meta) row.append(el("div", "h-meta", meta));
+  row.append(acts);
+  return row;
+}
+async function setStato(x, sel){
+  const prima = x.stato;
+  sel.dataset.s = sel.value;
+  try { await api("PATCH", "preventivi?id=" + encodeURIComponent(x.id), { stato: sel.value }); x.stato = sel.value; }
+  catch(e){ sel.value = prima; sel.dataset.s = prima; toast("Non sono riuscito a cambiare lo stato"); }
+}
+async function delQuote(x){
+  const ok = await ask({ title: "Eliminare il preventivo?", text: `${x.numero}${x.cliente ? " · " + x.cliente : ""} verrà tolto dallo storico per tutti. Non si può annullare.`, yes: "Sì, elimina", no: "Annulla" });
+  if (!ok) return;
+  try { await api("DELETE", "preventivi?id=" + encodeURIComponent(x.id)); histItems = histItems.filter(i => i.id !== x.id); renderHist(); toast("Preventivo eliminato"); }
+  catch(e){ toast("Non sono riuscito a eliminarlo"); }
+}
+async function openQuote(id, copia){
+  if (isDirty() && !(await ask({ title: copia ? "Duplicare questo preventivo?" : "Aprire questo preventivo?", text: "I dati che hai nel form adesso verranno sostituiti.", yes: "Sì, continua", no: "Annulla" }))) return;
+  let r;
+  try { r = await api("GET", "preventivi?id=" + encodeURIComponent(id)); }
+  catch(e){ toast("Non sono riuscito ad aprire il preventivo"); return; }
+  S = { ...defaults(), ...r.data, foto: r.foto || "", id: r.id, numAuto: false, savedCliente: String(r.data.cliente || "").trim() };
+  if (copia){
+    const t = todayISO();
+    S = { ...S, id: newId(), numAuto: true, numero: nextNumber(), data: t, validita: addDays(t, GIORNI_VALIDITA), savedCliente: "", consulente: LS.get(K_CONS) || S.consulente };
+  }
+  hist.close(); syncInputs(); update(); window.scrollTo({ top: 0 });
+  if (copia) refreshNumber();
+  toast(copia ? "Copia pronta: modifica i dati e genera il PDF" : `Preventivo <b>${esc(S.numero)}</b> aperto`);
+}
+$("#btnHist").addEventListener("click", openHist);
+$("#histX").addEventListener("click", () => hist.close());
+hist.addEventListener("click", e => { if (e.target === hist) hist.close(); });
+$("#histQ").addEventListener("input", renderHist);
+$("#histF").addEventListener("change", renderHist);
+
 /* ═══ Azioni ═══ */
+const isDirty = () => ["cliente","marca","versione","canone","prezzo","note"].some(k => String(S[k] || "").trim());
 function missing(){
   const m = [];
   if (!S.cliente.trim()) m.push(["Ragione sociale / Cognome e nome", "cliente"]);
@@ -799,21 +1024,40 @@ async function genPdf(){
       return;
     }
   }
-  commitNumber();
+  // storico condiviso: salva (o aggiorna) il preventivo e prende il numero dal server
+  await Remote.ready;
+  if (Remote.mode === "login") await ensureLogin();
+  if (Remote.mode === "on"){
+    try {
+      if (S.savedCliente && S.savedCliente !== S.cliente.trim()){
+        const aggiorna = await ask({ title: "Cliente diverso dall'ultimo salvataggio", text: "Questo preventivo è già nello storico con un altro cliente. Vuoi aggiornarlo oppure salvarne uno nuovo?", yes: "Aggiorna questo", no: "Salva come nuovo" });
+        if (!aggiorna){ S.id = newId(); S.numero = nextNumber(); S.numAuto = true; S.savedCliente = ""; }
+      }
+      const prima = S.numero;
+      await salvaRemoto();
+      if (prima && prima !== S.numero) toast(`Il numero <b>${esc(prima)}</b> era già usato: questo preventivo è il <b>${esc(S.numero)}</b>`);
+    } catch(e){
+      const ok = await ask({ title: "Non riesco a salvare nello storico", text: "Puoi generare comunque il PDF, ma questo preventivo non comparirà nello storico.", yes: "Genera comunque", no: "Annulla" });
+      if (!ok) return;
+    }
+  } else {
+    commitNumber();
+    if (Remote.mode === "login") toast("PDF generato senza salvarlo nello storico");
+  }
   const name = safeName(`Preventivo ${S.numero || ""} ${S.cliente || ""}`);
   document.title = name || BASE_TITLE;
   setTimeout(() => window.print(), 60);
 }
 window.addEventListener("afterprint", () => { document.title = BASE_TITLE; });
 async function newQuote(){
-  const dirty = ["cliente","marca","versione","canone","prezzo","note"].some(k => String(S[k]||"").trim());
-  if (dirty){
+  if (isDirty()){
     const ok = await ask({ title:"Nuovo preventivo?", text:"I dati inseriti finora verranno cancellati.", yes:"Sì, ricomincia", no:"Annulla" });
     if (!ok) return;
   }
   S = defaults(); LS.del(K_DRAFT);
   syncInputs(); update(); window.scrollTo({ top:0, behavior:"smooth" });
-  toast("Nuovo preventivo <b>" + S.numero + "</b> pronto");
+  await refreshNumber();
+  toast("Nuovo preventivo <b>" + esc(S.numero) + "</b> pronto");
 }
 $("#btnPdf").addEventListener("click", genPdf);
 $("#btnPdfTop").addEventListener("click", genPdf);
@@ -832,6 +1076,7 @@ $("#tabPrev").addEventListener("click", () => { document.body.classList.add("sho
 /* ═══ Avvio ═══ */
 syncInputs();
 update();
+Remote.ready = checkSession().then(m => m === "login" ? ensureLogin() : (m === "on" ? refreshNumber() : null));
 if (restored) toast("Bozza precedente ripristinata · <b>Nuovo preventivo</b> per ricominciare");
 })();
 </script>
