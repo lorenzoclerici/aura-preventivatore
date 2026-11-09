@@ -174,6 +174,8 @@ input.up{text-transform:uppercase}
 .sheet.final .kpi:not(.is-empty) ~ .kpi:not(.is-empty)::before{display:block}
 .kpi .k{font-size:8.3px;font-weight:600;color:rgba(255,255,255,.62);letter-spacing:.02em;line-height:1.3}
 .kpi .v{font-size:14.5px;font-weight:800;letter-spacing:-.01em;line-height:1.15;overflow-wrap:anywhere}
+.kpi .alt{font-size:9px;font-weight:600;color:rgba(255,255,255,.62);line-height:1.2;white-space:nowrap;margin-top:-1px}
+.kpi .alt:empty{display:none}
 .kpi.hero{flex:1.5 1 auto}
 .kpi.hero .v{font-size:28px;color:var(--lime);line-height:1}
 .lists{display:flex;gap:22px;padding:14px 22px 15px;border-top:1px solid rgba(255,255,255,.14)}
@@ -382,9 +384,15 @@ dialog .acts{display:flex;gap:10px;justify-content:flex-end;margin-top:22px;flex
     <section class="card" data-card>
       <div class="card-h"><span class="n">4</span><h2>Simulazione economica</h2><span class="cnt"></span></div>
       <div class="grid">
-        <div class="f full"><label for="prezzo">Prezzo veicolo / canone</label><div class="ad pre"><span>€</span><input id="prezzo" data-f="prezzo" data-t="money" type="text" inputmode="decimal" autocomplete="off" placeholder="0,00"></div></div>
-        <div class="f"><label for="anticipo">Anticipo (IVA inclusa)</label><div class="ad pre"><span>€</span><input id="anticipo" data-f="anticipo" data-t="money" type="text" inputmode="decimal" autocomplete="off" placeholder="0,00"></div></div>
-        <div class="f"><label for="canone">Canone mensile (IVA inclusa)</label><div class="ad pre"><span>€</span><input id="canone" data-f="canone" data-t="money" type="text" inputmode="decimal" autocomplete="off" placeholder="0,00"></div></div>
+        <div class="sub">IVA</div>
+        <div class="f full"><span class="lbl">Gli importi che scrivo sono</span><div class="chips" id="chipsIvaBase"></div></div>
+        <div class="f full"><span class="lbl">Nel PDF mostra</span><div class="chips" id="chipsIvaShow"></div></div>
+        <div class="f"><label for="ivaPct">Aliquota IVA</label><div class="ad suf"><input id="ivaPct" data-f="ivaPct" data-t="digits" type="text" inputmode="numeric" autocomplete="off" maxlength="2" placeholder="22"><span>%</span></div></div>
+        <div class="f"><span class="help" style="align-self:end;padding-bottom:12px">L'altra versione si calcola da sola.</span></div>
+        <div class="sub">Importi</div>
+        <div class="f full"><label for="prezzo" id="lblPrezzo">Prezzo veicolo / canone</label><div class="ad pre"><span>€</span><input id="prezzo" data-f="prezzo" data-t="money" type="text" inputmode="decimal" autocomplete="off" placeholder="0,00"></div><small class="help" id="hPrezzo"></small></div>
+        <div class="f"><label for="anticipo" id="lblAnticipo">Anticipo</label><div class="ad pre"><span>€</span><input id="anticipo" data-f="anticipo" data-t="money" type="text" inputmode="decimal" autocomplete="off" placeholder="0,00"></div><small class="help" id="hAnticipo"></small></div>
+        <div class="f"><label for="canone" id="lblCanone">Canone mensile</label><div class="ad pre"><span>€</span><input id="canone" data-f="canone" data-t="money" type="text" inputmode="decimal" autocomplete="off" placeholder="0,00"></div><small class="help" id="hCanone"></small></div>
         <div class="f full"><label for="durata">Durata</label><div class="chips" id="chipsDurata"></div><div class="ad suf"><input id="durata" data-f="durata" data-t="digits" type="text" inputmode="numeric" autocomplete="off" placeholder="oppure scrivi i mesi"><span>mesi</span></div></div>
         <div class="f full"><label for="kmInc">Chilometri inclusi</label><div class="chips" id="chipsKmInc"></div><input id="kmInc" data-f="kmInc" data-t="int" type="text" inputmode="numeric" autocomplete="off" placeholder="oppure scrivi i chilometri"><div class="chips sm" id="chipsKmUnit" aria-label="Unità"></div></div>
         <div class="f full"><label for="servInc">Servizi inclusi</label><div class="chips sm" id="chipsServInc"></div><textarea id="servInc" data-f="servInc" autocomplete="off" placeholder="Un servizio per riga"></textarea></div>
@@ -478,9 +486,9 @@ dialog .acts{display:flex;gap:10px;justify-content:flex-end;margin-top:22px;flex
             <h2 class="sh">Simulazione economica</h2>
             <div class="eco">
               <div class="kpis" data-any>
-                <div class="kpi" data-k="prezzo"><span class="k">Prezzo veicolo / canone</span><span class="v"></span></div>
-                <div class="kpi" data-k="anticipo"><span class="k">Anticipo (IVA inclusa)</span><span class="v"></span></div>
-                <div class="kpi hero" data-k="canone"><span class="k">Canone mensile (IVA inclusa)</span><span class="v"></span></div>
+                <div class="kpi" data-k="prezzo"><span class="k">Prezzo veicolo / canone</span><span class="v"></span><span class="alt"></span></div>
+                <div class="kpi" data-k="anticipo"><span class="k">Anticipo</span><span class="v"></span><span class="alt"></span></div>
+                <div class="kpi hero" data-k="canone"><span class="k">Canone mensile</span><span class="v"></span><span class="alt"></span></div>
                 <div class="kpi" data-k="durataD"><span class="k">Durata</span><span class="v"></span></div>
                 <div class="kpi" data-k="kmIncD"><span class="k">Chilometri inclusi</span><span class="v"></span></div>
               </div>
@@ -618,6 +626,7 @@ function defaults(){
     marca:"", versione:"", immat:"", km:"", alim:"", cambio:"", colore:"",
     prezzo:"", anticipo:"", canone:"", durata:"", kmInc:"", kmUnit:"km/anno",
     servInc:"", servEsc:"", noteEco:"", note:"", foto:"",
+    ivaBase:"incl", ivaShow:"both", ivaPct:"22",   // versione in cui scrivo gli importi · cosa mostra il PDF · aliquota
     id: newId(), numAuto: true, savedCliente: "",   // id nello storico · numero ancora automatico · cliente all'ultimo salvataggio
   };
 }
@@ -677,6 +686,8 @@ makeChips("#chipsCambio", { key:"cambio", values: CHIPS.cambio });
 makeChips("#chipsDurata", { key:"durata", values: CHIPS.durata, label: v => v + " mesi" });
 makeChips("#chipsKmInc",  { key:"kmInc",  values: CHIPS.kmInc });
 makeChips("#chipsKmUnit", { key:"kmUnit", values: CHIPS.kmUnit, required:true });
+makeChips("#chipsIvaBase", { key:"ivaBase", values:["incl","escl"], label: v => v === "incl" ? "IVA inclusa" : "IVA esclusa", required:true });
+makeChips("#chipsIvaShow", { key:"ivaShow", values:["both","incl","escl"], label: v => ({ both:"Entrambi", incl:"Solo IVA inclusa", escl:"Solo IVA esclusa" })[v], required:true });
 makeChips("#chipsServInc",{ key:"servInc",values: SERVIZI_INCLUSI, multi:true });
 makeChips("#chipsServEsc",{ key:"servEsc",values: SERVIZI_ESCLUSI,  multi:true });
 makeChips("#chipsValidita",{ key:"validita", values:["15","30","60","90"], label: v => v + " giorni",
@@ -734,6 +745,27 @@ fotoIn.addEventListener("change", () => { loadFoto(fotoIn.files[0]); fotoIn.valu
 dz.addEventListener("dragleave", e => { if (!dz.contains(e.relatedTarget)) dz.classList.remove("over"); });
 dz.addEventListener("drop", e => { e.preventDefault(); dz.classList.remove("over"); loadFoto(e.dataTransfer.files[0]); });
 
+/* ═══ IVA: versione scritta dal consulente → l'altra si calcola ═══ */
+const AMT = { prezzo:"Prezzo veicolo / canone", anticipo:"Anticipo", canone:"Canone mensile" };
+const ivaName = v => v === "escl" ? "IVA esclusa" : "IVA inclusa";
+const baseV = () => S.ivaBase === "escl" ? "escl" : "incl";
+const showV = () => (S.ivaShow === "both" || S.ivaShow === "escl") ? S.ivaShow : "incl";   // vecchi preventivi: solo IVA inclusa
+function ivaPair(s){
+  const n = parseNum(s); if (isNaN(n)) return null;
+  const p = parseFloat(S.ivaPct), f = 1 + (Number.isFinite(p) && p >= 0 ? p : 22) / 100;
+  const r2 = x => Math.round((x + Number.EPSILON) * 100) / 100;
+  return baseV() === "escl" ? { escl: n, incl: r2(n * f) } : { incl: n, escl: r2(n / f) };
+}
+// valore in evidenza, etichetta e (con "Entrambi") l'altra versione in piccolo
+function amountView(key){
+  const first = showV() === "both" ? baseV() : showV(), other = first === "incl" ? "escl" : "incl", p = ivaPair(S[key]);
+  return {
+    [key]: p ? "€ " + fmtMoney(p[first]) : "",
+    [key + "L"]: `${AMT[key]} (${ivaName(first)})`,
+    [key + "Alt"]: p && showV() === "both" ? `${ivaName(other)} € ${fmtMoney(p[other])}` : "",
+  };
+}
+
 /* ═══ Valori mostrati nel documento ═══ */
 function display(){
   const km = fmtInt(S.km);
@@ -744,7 +776,7 @@ function display(){
     contatti: [S.tel.trim(), S.email.trim()].filter(Boolean).join(" / "),
     marca: S.marca.trim(), versione: S.versione.trim(), immat: S.immat.trim(),
     kmV: km ? (isNumeric(km) ? km + " km" : km) : "", alim: S.alim.trim(), cambio: S.cambio.trim(), colore: S.colore.trim(),
-    prezzo: money(S.prezzo), anticipo: money(S.anticipo), canone: money(S.canone),
+    ...amountView("prezzo"), ...amountView("anticipo"), ...amountView("canone"),
     durataD: S.durata ? S.durata + " mesi" : "",
     kmIncD: kmI ? (isNumeric(kmI) ? fmtInt(kmI) + " " + S.kmUnit : kmI) : "",
     noteEco: S.noteEco.trim(),
@@ -762,7 +794,10 @@ function render(){
     let empty;
     if (k === "servInc" || k === "servEsc"){ const a = lines(S[k]); li($("ul", w), a); empty = !a.length; }
     else if (k === "foto"){ const im = $("img", w); if (S.foto){ if (im.src !== S.foto) im.src = S.foto; } else im.removeAttribute("src"); empty = !S.foto; }
-    else { $(".v", w).textContent = D[k]; empty = !D[k]; }
+    else {
+      $(".v", w).textContent = D[k]; empty = !D[k];
+      if (AMT[k]){ $(".k", w).textContent = D[k + "L"]; $(".alt", w).textContent = D[k + "Alt"]; }
+    }
     w.classList.toggle("is-empty", empty);
   });
   $(".veh", sheet).classList.toggle("nophoto", !S.foto);
@@ -774,6 +809,14 @@ function render(){
 }
 
 function updateFormUI(){
+  // IVA: etichette dei campi e valore calcolato sotto ogni importo
+  const altV = baseV() === "incl" ? "escl" : "incl";
+  [["prezzo","Prezzo"], ["anticipo","Anticipo"], ["canone","Canone"]].forEach(([k, id]) => {
+    $("#lbl" + id).textContent = `${AMT[k]} (${ivaName(baseV())})`;
+    const p = ivaPair(S[k]);
+    $("#h" + id).textContent = p ? `${ivaName(altV)}: € ${fmtMoney(p[altV])}` : "";
+  });
+
   // foto: miniatura nel form
   $("#dropBtn").hidden = !!S.foto; $("#dropped").hidden = !S.foto;
   const th = $("#fotoThumb");
@@ -963,7 +1006,7 @@ function histRow(x){
   sel.addEventListener("change", () => setStato(x, sel));
   top.append(el("b", "h-num", x.numero), el("span", "h-date", dateIt(x.data)), sel);
   const veh = [x.marca, x.versione].filter(Boolean).join(" · ");
-  const meta = [x.canone ? money(x.canone) + " / mese" : "", x.consulente ? "Consulente: " + x.consulente : ""].filter(Boolean).join("  •  ");
+  const meta = [x.canone ? money(x.canone) + (x.ivaBase === "escl" ? " + IVA / mese" : " IVA incl. / mese") : "", x.consulente ? "Consulente: " + x.consulente : ""].filter(Boolean).join("  •  ");
   const btn = (label, cls, fn) => { const b = el("button", "btn " + cls, label); b.type = "button"; b.addEventListener("click", fn); return b; };
   const acts = el("div", "h-acts");
   acts.append(btn("Apri", "", () => openQuote(x.id, false)), btn("Duplica", "", () => openQuote(x.id, true)), btn("Elimina", "danger", () => delQuote(x)));
@@ -989,7 +1032,8 @@ async function openQuote(id, copia){
   let r;
   try { r = await api("GET", "preventivi?id=" + encodeURIComponent(id)); }
   catch(e){ toast("Non sono riuscito ad aprire il preventivo"); return; }
-  S = { ...defaults(), ...r.data, foto: r.foto || "", id: r.id, numAuto: false, savedCliente: String(r.data.cliente || "").trim() };
+  const vecchio = !("ivaShow" in r.data);   // salvato prima della scelta IVA: erano importi IVA inclusa, mostrati così
+  S = { ...defaults(), ...(vecchio ? { ivaBase: "incl", ivaShow: "incl" } : {}), ...r.data, foto: r.foto || "", id: r.id, numAuto: false, savedCliente: String(r.data.cliente || "").trim() };
   if (copia){
     const t = todayISO();
     S = { ...S, id: newId(), numAuto: true, numero: nextNumber(), data: t, validita: addDays(t, GIORNI_VALIDITA), savedCliente: "", consulente: LS.get(K_CONS) || S.consulente };

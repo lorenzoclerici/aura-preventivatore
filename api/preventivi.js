@@ -76,7 +76,7 @@ async function salva(body) {
   const riepilogo = {
     id, numero, data: d.data.slice(0, 10),
     cliente: d.cliente.slice(0, 120), marca: d.marca.slice(0, 80), versione: d.versione.slice(0, 80),
-    canone: d.canone.slice(0, 30), consulente: d.consulente.slice(0, 80),
+    canone: d.canone.slice(0, 30), ivaBase: d.ivaBase === "escl" ? "escl" : "incl", consulente: d.consulente.slice(0, 80),
     stato: vecchio && STATI.includes(vecchio.stato) ? vecchio.stato : STATI[0],
     creato: vecchio ? vecchio.creato : ora, aggiornato: ora, foto: !!foto,
   };

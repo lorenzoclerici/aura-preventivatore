@@ -8,7 +8,7 @@
 const STATI = ["Generato", "Inviato", "Accettato", "Rifiutato"];
 const CAMPI = ["numero", "data", "validita", "consulente", "cliente", "indirizzo", "cf", "piva", "tel", "email",
   "marca", "versione", "immat", "km", "alim", "cambio", "colore", "prezzo", "anticipo", "canone", "durata",
-  "kmInc", "kmUnit", "servInc", "servEsc", "noteEco", "note"];
+  "kmInc", "kmUnit", "servInc", "servEsc", "noteEco", "note", "ivaBase", "ivaShow", "ivaPct"];
 const K = {
   idx: "aura:q:idx",                 // hash  id -> riepilogo (JSON)
   nums: "aura:q:nums",               // hash  numero -> id (garantisce numeri unici)
